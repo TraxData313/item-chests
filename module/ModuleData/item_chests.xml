@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Item Chests: 50 chest slots. Each chest is its own item, so its weight can follow its contents.
+     Same shape as the vanilla quest item "stolen_goods": goods, never merchandise, crate mesh. -->
+<Items>
+	<Item
+		id="item_chest_01"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_02"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_03"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_04"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_05"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_06"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_07"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_08"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_09"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_10"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_11"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_12"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_13"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_14"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_15"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_16"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_17"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_18"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_19"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_20"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_21"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_22"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_23"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_24"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_25"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_26"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_27"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_28"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_29"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_30"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_31"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_32"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_33"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_34"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_35"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_36"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_37"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_38"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_39"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_40"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_41"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_42"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_43"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_44"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_45"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_46"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_47"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_48"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_49"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+	<Item
+		id="item_chest_50"
+		name="{=!}Chest"
+		mesh="crate_a"
+		is_merchandise="false"
+		value="1"
+		weight="0"
+		Type="Goods">
+		<Flags
+			Civilian="true" />
+	</Item>
+</Items>
