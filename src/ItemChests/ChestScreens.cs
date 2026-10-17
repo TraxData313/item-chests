@@ -7,6 +7,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.Inventory;
 using TaleWorlds.CampaignSystem.Party;
+using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Inventory;
 using TaleWorlds.Core;
@@ -72,7 +73,7 @@ namespace ItemChests
         public static void BeforeOpenOwnInventory(Action? extras)
         {
             // Nothing is open on the party roster yet, so this is the moment to fix it up.
-            ChestBehavior.Instance?.Sanitize();
+            ItemChestsCampaignBehavior.Instance?.Sanitize();
             _openingOwn = true;
             _openingOwnExtras = extras;
         }
@@ -89,6 +90,25 @@ namespace ItemChests
                 return;
             _openingOwn = false;
             _current = new Screen(logic, Kind.Own, 0, _openingOwnExtras);
+            if (Game.Current?.CheatMode == true)
+            {
+                // Cheat mode fills the Discard side with ten of every item, chests too: take those out (and out of
+                // the copy Reset restores from), or they would merge into the real chests.
+                StripChests(logic.GetElementsInRoster(InventoryLogic.InventorySide.OtherInventory) as ItemRoster);
+                StripChests(logic.GetElementsInInitialRoster(InventoryLogic.InventorySide.OtherInventory) as ItemRoster);
+            }
+        }
+
+        private static void StripChests(ItemRoster? roster)
+        {
+            if (roster == null)
+                return;
+            for (int i = roster.Count - 1; i >= 0; i--)
+            {
+                var element = roster.GetElementCopyAtIndex(i);
+                if (ChestItems.SlotOf(element.EquipmentElement.Item) != 0)
+                    roster.AddToCounts(element.EquipmentElement, -element.Amount);
+            }
         }
 
         public static void Tick()
@@ -125,7 +145,7 @@ namespace ItemChests
 
         public static void OnChestClicked(SPInventoryVM vm, int slot)
         {
-            var behavior = ChestBehavior.Instance;
+            var behavior = ItemChestsCampaignBehavior.Instance;
             var screen = Find(LogicOf(vm));
             if (behavior == null || !behavior.IsActive(slot))
                 return;
@@ -145,7 +165,7 @@ namespace ItemChests
 
         public static void NewChest(SPInventoryVM vm)
         {
-            var behavior = ChestBehavior.Instance;
+            var behavior = ItemChestsCampaignBehavior.Instance;
             var screen = Find(LogicOf(vm));
             if (behavior == null || screen == null)
                 return;
@@ -166,7 +186,7 @@ namespace ItemChests
 
         public static void RenameChest(SPInventoryVM vm)
         {
-            var behavior = ChestBehavior.Instance;
+            var behavior = ItemChestsCampaignBehavior.Instance;
             var screen = Find(LogicOf(vm));
             if (behavior == null || screen == null || screen.Kind != Kind.Chest)
                 return;
@@ -187,7 +207,7 @@ namespace ItemChests
 
         public static void RemoveChest(SPInventoryVM vm)
         {
-            var behavior = ChestBehavior.Instance;
+            var behavior = ItemChestsCampaignBehavior.Instance;
             var screen = Find(LogicOf(vm));
             if (behavior == null || screen == null || screen.Kind != Kind.Chest)
                 return;
@@ -225,23 +245,34 @@ namespace ItemChests
         // ---- screens ------------------------------------------------------------------------------------------
 
         // Finishes the current screen as Done does (asking first when the Discard side holds items), then runs next.
+        // Finishes the current screen as Done does, with the same questions the game asks there (over the
+        // carrying limit; items waiting on the Discard side), then runs next.
         private static void Leave(SPInventoryVM vm, Screen screen, Action next)
         {
             vm.ExecuteRemoveZeroCounts();
-            int discards = screen.Kind == Kind.Own && !Game.Current.CheatMode
-                ? screen.Logic.GetElementCountOnSide(InventoryLogic.InventorySide.OtherInventory)
-                : 0;
-            if (discards > 0)
+            Action discardCheck = () =>
             {
-                InformationManager.ShowInquiry(new InquiryData("", GameTexts.FindText("str_discarding_items").ToString(), true, true,
-                    GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(),
-                    () => Close(vm, screen, next), null));
+                bool discarding = screen.Kind == Kind.Own && !Game.Current.CheatMode && (int)screen.Logic.XpGainFromDonations == 0
+                    && screen.Logic.GetElementCountOnSide(InventoryLogic.InventorySide.OtherInventory) > 0;
+                if (discarding)
+                    Ask("", GameTexts.FindText("str_discarding_items").ToString(), () => Close(vm, screen, next));
+                else
+                    Close(vm, screen, next);
+            };
+            if (screen.Logic.IsThereAnyChanges() && vm.PlayerEquipmentCountWarned)
+            {
+                GameTexts.SetVariable("newline", "\n");
+                Ask(new TextObject("{=uJro3Bua}Over Limit").ToString(), GameTexts.FindText("str_inventory_over_limit").ToString(), discardCheck);
             }
             else
             {
-                Close(vm, screen, next);
+                discardCheck();
             }
         }
+
+        private static void Ask(string title, string text, Action yes) =>
+            InformationManager.ShowInquiry(new InquiryData(title, text, true, true,
+                GameTexts.FindText("str_yes").ToString(), GameTexts.FindText("str_no").ToString(), yes, null));
 
         private static void Close(SPInventoryVM vm, Screen screen, Action next)
         {
@@ -274,7 +305,7 @@ namespace ItemChests
 
         private static void OpenChest(int slot, Action? extras, CharacterObject character)
         {
-            var behavior = ChestBehavior.Instance;
+            var behavior = ItemChestsCampaignBehavior.Instance;
             if (behavior == null || !behavior.IsActive(slot) || MobileParty.MainParty == null)
                 return;
             behavior.Sanitize();

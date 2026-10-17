@@ -19,16 +19,16 @@ namespace ItemChests
         public string Content => @"
 <ListPanel Id=""ItemChestsBar"" WidthSizePolicy=""CoverChildren"" HeightSizePolicy=""StretchToParent"" VerticalAlignment=""Center"" MarginRight=""10"" IsVisible=""@IsChestBarVisible"" StackLayout.LayoutMethod=""HorizontalLeftToRight"">
   <Children>
-    " + Button("ExecuteNewChest", "NewChestText", "NewChestHint", "110", null) + @"
-    " + Button("ExecuteRenameChest", "RenameChestText", "RenameChestHint", "90", "@IsChestOpen") + @"
-    " + Button("ExecuteRemoveChest", "RemoveChestText", "RemoveChestHint", "90", "@IsChestOpen") + @"
+    " + Button("ExecuteNewChest", "NewChestText", "NewChestHint", "100", null) + @"
+    " + Button("ExecuteRenameChest", "RenameChestText", "RenameChestHint", "80", "@IsChestOpen") + @"
+    " + Button("ExecuteRemoveChest", "RemoveChestText", "RemoveChestHint", "80", "@IsChestOpen") + @"
   </Children>
 </ListPanel>";
 
         private static string Button(string command, string text, string hint, string width, string? visible) => @"
-    <ButtonWidget WidthSizePolicy=""Fixed"" HeightSizePolicy=""Fixed"" SuggestedWidth=""" + width + @""" SuggestedHeight=""36"" VerticalAlignment=""Center"" MarginRight=""6"" Brush=""ButtonBrush2"" Command.Click=""" + command + @""" UpdateChildrenStates=""true""" + (visible == null ? "" : @" IsVisible=""" + visible + @"""") + @">
+    <ButtonWidget WidthSizePolicy=""Fixed"" HeightSizePolicy=""Fixed"" SuggestedWidth=""" + width + @""" SuggestedHeight=""36"" VerticalAlignment=""Center"" MarginRight=""4"" Brush=""ButtonBrush2"" Command.Click=""" + command + @""" UpdateChildrenStates=""true""" + (visible == null ? "" : @" IsVisible=""" + visible + @"""") + @">
       <Children>
-        <TextWidget DoNotAcceptEvents=""true"" WidthSizePolicy=""StretchToParent"" HeightSizePolicy=""StretchToParent"" Brush=""Popup.Button.Text"" Brush.FontSize=""18"" Text=""@" + text + @""" />
+        <TextWidget DoNotAcceptEvents=""true"" WidthSizePolicy=""StretchToParent"" HeightSizePolicy=""StretchToParent"" Brush=""Popup.Button.Text"" Brush.FontSize=""16"" Text=""@" + text + @""" />
         <HintWidget DataSource=""{" + hint + @"}"" DoNotAcceptEvents=""true"" WidthSizePolicy=""StretchToParent"" HeightSizePolicy=""StretchToParent"" Command.HoverBegin=""ExecuteBeginHint"" Command.HoverEnd=""ExecuteEndHint"" />
       </Children>
     </ButtonWidget>";
@@ -43,7 +43,7 @@ namespace ItemChests
         public ChestBarMixin(SPInventoryVM vm) : base(vm)
         {
             var screen = ChestScreens.Find(ChestScreens.LogicOf(vm));
-            _isVisible = screen != null && ChestBehavior.Instance != null;
+            _isVisible = screen != null && ItemChestsCampaignBehavior.Instance != null;
             _isChestOpen = screen?.Kind == ChestScreens.Kind.Chest;
         }
 

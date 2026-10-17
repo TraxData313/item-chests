@@ -40,7 +40,7 @@ namespace ItemChests
             base.OnGameStart(game, gameStarterObject);
             if (!(game.GameType is Campaign) || !(gameStarterObject is CampaignGameStarter starter))
                 return;
-            starter.AddBehavior(new ChestBehavior());
+            starter.AddBehavior(new ItemChestsCampaignBehavior());
             if (_patched)
                 return;
             _patched = true;

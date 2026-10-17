@@ -36,8 +36,10 @@ For Bannerlord v1.4.8, with or without the War Sails DLC. Needs Harmony and UIEx
   keys. It keeps one rule: every chest in use is in the main party's roster exactly once, quest-flagged; chest
   items of unused slots are removed. Checked after loading, before your inventory opens, before a chest opens
   and once a day.
-- The own inventory is recognised by a prefix on `InventoryScreenHelper.OpenScreenAsInventory` and a postfix
-  on `InventoryLogic.Initialize` that marks the logic it builds.
+- The own inventory is recognised by a prefix on the private `InventoryScreenHelper.OpenInventoryPresentation`
+  (the public `OpenScreenAsInventory` is a one-liner the JIT may inline) and a postfix on
+  `InventoryLogic.Initialize` that marks the logic it builds. In cheat mode it also takes the chest items out
+  of the Discard side the game fills with ten of everything.
 - A prefix on `SPInventoryVM.ProcessItemSelect` turns a click on a chest into "open". Two inventory screens
   can't be stacked (their view models share static callbacks), so the current screen is closed through the
   game's own `InventoryScreenHelper.CloseScreen` with a wrapped `DoneLogicExtrasDelegate`, and the chest screen
@@ -45,10 +47,22 @@ For Bannerlord v1.4.8, with or without the War Sails DLC. Needs Harmony and UIEx
   delegate the inventory was opened with (in a scene it re-dresses the player) is carried along every screen.
 - The chest screen's `AfterTransfer`/`AfterReset` update the chest's weight before the screen's own view
   model reads it.
-- Prefixes on `InventoryLogic.AddTransferCommand(s)` drop animals bound for a chest.
+- A prefix on the private `InventoryLogic.TransferItem`, where every move ends, drops animals bound for a chest.
+- "Take all" from a chest: the game caps it by the party's free capacity, which already counts the chest. A
+  prefix on `SPInventoryVM.TransferAll` makes the chest weightless while the budget is worked out; the first
+  transfer (or a finalizer) gives it its true weight back.
+- The chest's weight is the contents' weight by the game's capacity model (`GetItemEffectiveWeight`).
 - A postfix on `ItemMenuVM.SetItem` writes the chest's contents into its tooltip.
 - The buttons are a UIExtenderEx prefab insert before the left panel's gold readout, bound to a view model
   mixin on `SPInventoryVM`.
+
+## Known limits
+
+- Leaving a chest screen through the top bar (Party, Clan… or their keys) commits it and goes straight to that
+  screen instead of back to the inventory. Nothing is lost.
+- Like the game's own stash, goods put in a chest count as "sold" for the Trade skill's profit records: if none
+  of that good is left in the party, the purchase price is forgotten, so the Trade XP for selling it later is
+  off.
 
 ## Adding and removing the mod
 

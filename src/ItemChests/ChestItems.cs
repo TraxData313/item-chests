@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.Core;
 using TaleWorlds.Localization;
@@ -49,8 +51,16 @@ namespace ItemChests
             catch (Exception e) { SubModule.LogOnce("setting a chest weight", e); }
         }
 
-        public static float WeightOf(IEnumerable<ItemRosterElement> contents) =>
-            contents.Sum(e => e.EquipmentElement.GetEquipmentElementWeight() * e.Amount);
+        // What the contents would weigh in the party, by the game's own capacity model (or a mod's replacement).
+        public static float WeightOf(IEnumerable<ItemRosterElement> contents)
+        {
+            var party = MobileParty.MainParty;
+            var model = Campaign.Current?.Models?.InventoryCapacityModel;
+            if (party == null || model == null)
+                return contents.Sum(e => e.EquipmentElement.GetEquipmentElementWeight() * e.Amount);
+            bool atSea = party.IsCurrentlyAtSea;
+            return contents.Sum(e => model.GetItemEffectiveWeight(e.EquipmentElement, party, atSea, out _) * e.Amount);
+        }
 
         public static int WorthOf(IEnumerable<ItemRosterElement> contents) =>
             contents.Sum(e => e.EquipmentElement.GetBaseValue() * e.Amount);

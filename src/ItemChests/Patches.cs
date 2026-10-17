@@ -21,7 +21,8 @@ namespace ItemChests
         public static void Apply(Harmony harmony)
         {
             // Which inventory is the player's own (I key / map bar / town scene): mark its logic as it is built.
-            harmony.Patch(AccessTools.Method(typeof(InventoryScreenHelper), nameof(InventoryScreenHelper.OpenScreenAsInventory)),
+            // The private OpenInventoryPresentation, not the one-line public wrapper the JIT could inline.
+            harmony.Patch(AccessTools.Method(typeof(InventoryScreenHelper), "OpenInventoryPresentation"),
                 prefix: new HarmonyMethod(typeof(Patches), nameof(OpenOwnPrefix)),
                 finalizer: new HarmonyMethod(typeof(Patches), nameof(OpenOwnFinalizer)));
             harmony.Patch(AccessTools.Method(typeof(InventoryLogic), nameof(InventoryLogic.Initialize), new[]
@@ -36,11 +37,16 @@ namespace ItemChests
             harmony.Patch(AccessTools.Method(typeof(SPInventoryVM), "ProcessItemSelect"),
                 prefix: new HarmonyMethod(typeof(Patches), nameof(ItemSelectPrefix)));
 
-            // No animals into a chest.
-            harmony.Patch(AccessTools.Method(typeof(InventoryLogic), nameof(InventoryLogic.AddTransferCommand)),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(AddTransferCommandPrefix)));
-            harmony.Patch(AccessTools.Method(typeof(InventoryLogic), nameof(InventoryLogic.AddTransferCommands)),
-                prefix: new HarmonyMethod(typeof(Patches), nameof(AddTransferCommandsPrefix)));
+            // No animals into a chest. TransferItem is where every move ends up (arrows, drag, unequip, transfer
+            // all), and it is too big to be inlined, unlike the public AddTransferCommand.
+            harmony.Patch(AccessTools.Method(typeof(InventoryLogic), "TransferItem"),
+                prefix: new HarmonyMethod(typeof(Patches), nameof(TransferItemPrefix)));
+
+            // "Take all" from a chest: the game caps it by the party's free capacity, which already counts the
+            // chest's weight - that is, the very items being taken out.
+            harmony.Patch(AccessTools.Method(typeof(SPInventoryVM), "TransferAll"),
+                prefix: new HarmonyMethod(typeof(Patches), nameof(TransferAllPrefix)),
+                finalizer: new HarmonyMethod(typeof(Patches), nameof(TransferAllFinalizer)));
         }
 
         // Only costs the contents list in the tooltip; patched apart so a failure leaves the rest working.
@@ -75,7 +81,7 @@ namespace ItemChests
                 if (item is SPItemVM row && row.InventorySide == InventoryLogic.InventorySide.PlayerInventory)
                 {
                     int slot = ChestItems.SlotOf(row.ItemRosterElement.EquipmentElement.Item);
-                    if (slot != 0 && ChestBehavior.Instance?.IsActive(slot) == true)
+                    if (slot != 0 && ItemChestsCampaignBehavior.Instance?.IsActive(slot) == true)
                     {
                         ChestScreens.OnChestClicked(__instance, slot);
                         return false;
@@ -89,25 +95,49 @@ namespace ItemChests
             return true;
         }
 
-        private static bool AddTransferCommandPrefix(InventoryLogic __instance, TransferCommand command)
-        {
-            try { return ChestScreens.AllowTransfer(__instance, command); }
-            catch (Exception e) { SubModule.LogOnce("checking a transfer", e); return true; }
-        }
-
-        private static void AddTransferCommandsPrefix(InventoryLogic __instance, ref IEnumerable<TransferCommand> commands)
+        private static bool TransferItemPrefix(InventoryLogic __instance, ref TransferCommand transferCommand, ref List<TransferCommandResult> __result)
         {
             try
             {
-                if (ChestScreens.Find(__instance)?.Kind != ChestScreens.Kind.Chest || commands == null)
-                    return;
-                var logic = __instance;
-                commands = commands.Where(c => ChestScreens.AllowTransfer(logic, c)).ToList();
+                if (ChestScreens.AllowTransfer(__instance, transferCommand))
+                    return true;
+                __result = new List<TransferCommandResult>();
+                return false;
             }
             catch (Exception e)
             {
-                SubModule.LogOnce("checking transfers", e);
+                SubModule.LogOnce("checking a transfer", e);
+                return true;
             }
+        }
+
+        private static void TransferAllPrefix(SPInventoryVM __instance, bool isBuy, out int __state)
+        {
+            __state = 0;
+            try
+            {
+                var screen = ChestScreens.Find(ChestScreens.LogicOf(__instance));
+                if (!isBuy || screen == null || screen.Kind != ChestScreens.Kind.Chest)
+                    return;
+                var item = ChestItems.Get(screen.Slot);
+                if (item == null)
+                    return;
+                // Weightless while the budget is worked out; the first transfer gives it its true weight back.
+                __state = screen.Slot;
+                ChestItems.SetWeight(item, 0f);
+                MobileParty.MainParty?.ItemRoster?.UpdateVersion();
+            }
+            catch (Exception e)
+            {
+                SubModule.LogOnce("take all from a chest", e);
+            }
+        }
+
+        private static Exception? TransferAllFinalizer(Exception? __exception, int __state)
+        {
+            if (__state != 0)
+                ItemChestsCampaignBehavior.Instance?.RefreshWeight(__state);
+            return __exception;
         }
 
         // The tooltip of a chest: what is in it instead of trade rumours.
@@ -116,7 +146,7 @@ namespace ItemChests
             try
             {
                 int slot = ChestItems.SlotOf(item?.ItemRosterElement.EquipmentElement.Item);
-                var contents = slot == 0 ? null : ChestBehavior.Instance?.ContentsOf(slot);
+                var contents = slot == 0 ? null : ItemChestsCampaignBehavior.Instance?.ContentsOf(slot);
                 if (contents == null)
                     return;
                 var lines = __instance.TargetItemProperties;

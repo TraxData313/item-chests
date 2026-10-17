@@ -13,18 +13,18 @@ namespace ItemChests
     //
     // Saved as vanilla types only (List<string> and ItemRoster under this behavior's own keys), so a save still
     // loads without the mod: the chest items then turn into "Trash Item" and the contents are lost.
-    internal sealed class ChestBehavior : CampaignBehaviorBase
+    internal sealed class ItemChestsCampaignBehavior : CampaignBehaviorBase
     {
         private const string NamesKey = "ItemChests_names";
         private const string ContentsKeyPrefix = "ItemChests_contents_";
 
-        public static ChestBehavior? Instance { get; private set; }
+        public static ItemChestsCampaignBehavior? Instance { get; private set; }
 
         // Index = slot - 1; an empty string is a free slot.
         private List<string> _names = NewNames();
         private readonly Dictionary<int, ItemRoster> _contents = new Dictionary<int, ItemRoster>();
 
-        public ChestBehavior()
+        public ItemChestsCampaignBehavior()
         {
             Instance = this;
         }
