@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- Steam Workshop / mod thumbnail, 1024x1024: the chest screen (Chest 1 open on the left) behind a gold frame,
+     title at the bottom. Style matches better-skirmisher-separation. Rendered by: python tools\make_thumbnail.py -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1024px; height: 1024px; overflow: hidden; background: #0d0a07; }
+  .canvas { position: relative; width: 1024px; height: 1024px; background: #0d0a07;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Georgia, serif; }
+  .shot { position: absolute; left: 0; top: SHOT_TOPpx; width: 1024px; height: SHOT_Hpx;
+    background: url('PANEL_IMG') left top / 100% 100% no-repeat;
+    filter: brightness(1.08) contrast(1.06) saturate(1.1); }
+  .shade { position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 130% 95% at 50% 30%, rgba(0,0,0,0) 50%, rgba(13,10,7,0.45) 84%, rgba(13,10,7,0.85) 100%),
+      linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 55%, rgba(13,10,7,0.85) 66%, rgba(13,10,7,1) 74%); }
+  .ring { position: absolute; left: RING_Lpx; top: RING_Tpx; width: RING_Wpx; height: RING_Hpx;
+    border: 5px solid #ffd76a; border-radius: 16px;
+    box-shadow: 0 0 22px 6px rgba(255, 205, 90, 0.55), inset 0 0 14px rgba(255, 205, 90, 0.35); }
+  .frame { position: absolute; inset: 22px; border: 3px solid rgba(214, 178, 94, 0.85); border-radius: 26px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.6), inset 0 0 60px rgba(0,0,0,0.35); }
+  .titleblock { position: absolute; left: 0; right: 0; bottom: 64px; text-align: center; }
+  .ornament { color: #d6b25e; font-size: 26px; letter-spacing: 14px; text-shadow: 0 2px 6px rgba(0,0,0,0.9); margin-bottom: 6px; }
+  h1 { color: #e8c874; font-size: 120px; font-weight: 600; letter-spacing: 5px; font-variant: small-caps; line-height: 0.98;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.95), 0 0 45px rgba(232, 200, 116, 0.28); }
+  .tagline { margin-top: 18px; color: #f0e4c8; font-size: 40px; font-style: italic; letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.95); }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="shot"></div>
+    <div class="shade"></div>
+    <div class="ring"></div>
+    <div class="frame"></div>
+    <div class="titleblock">
+      <div class="ornament">✦ ✦ ✦</div>
+      <h1>Item Chests</h1>
+      <div class="tagline">Kept apart. Never sold, eaten or equipped.</div>
+    </div>
+  </div>
+</body>
+</html>

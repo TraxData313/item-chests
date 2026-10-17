@@ -1,5 +1,7 @@
 # Item Chests
 
+![A chest open on the left of the inventory: New chest, Rename and Remove above its contents](docs/screenshot.jpg)
+
 A mod for Mount & Blade II: Bannerlord.
 
 Made by two of us: the code and all technical work by Claude (Opus 5.5), an AI; the idea, feedback and
