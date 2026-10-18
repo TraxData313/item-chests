@@ -56,6 +56,19 @@ namespace ItemChests
                 postfix: new HarmonyMethod(typeof(Patches), nameof(SetItemPostfix)));
         }
 
+        // Chests above everything else in the item list, whatever the sort column and direction. Only costs the
+        // order; patched apart so a failure leaves the rest working.
+        public static void ApplySorting(Harmony harmony)
+        {
+            foreach (var comparer in new[]
+                {
+                    typeof(SPInventorySortControllerVM.ItemTypeComparer), typeof(SPInventorySortControllerVM.ItemNameComparer),
+                    typeof(SPInventorySortControllerVM.ItemQuantityComparer), typeof(SPInventorySortControllerVM.ItemCostComparer),
+                })
+                harmony.Patch(AccessTools.Method(comparer, nameof(SPInventorySortControllerVM.ItemComparer.Compare)),
+                    prefix: new HarmonyMethod(typeof(Patches), nameof(ComparePrefix)));
+        }
+
         private static void OpenOwnPrefix(Action doneLogicExtrasDelegate)
         {
             try { ChestScreens.BeforeOpenOwnInventory(doneLogicExtrasDelegate); }
@@ -138,6 +151,32 @@ namespace ItemChests
             if (__state != 0)
                 ItemChestsCampaignBehavior.Instance?.RefreshWeight(__state);
             return __exception;
+        }
+
+        // A chest before any other item; chests among themselves by name, then by slot.
+        private static bool ComparePrefix(SPItemVM x, SPItemVM y, ref int __result)
+        {
+            try
+            {
+                int slotX = ChestItems.SlotOf(x?.ItemRosterElement.EquipmentElement.Item);
+                int slotY = ChestItems.SlotOf(y?.ItemRosterElement.EquipmentElement.Item);
+                if (slotX == 0 && slotY == 0)
+                    return true;
+                if (slotX == 0 || slotY == 0)
+                    __result = slotX != 0 ? -1 : 1;
+                else
+                {
+                    __result = string.Compare(x!.ItemDescription, y!.ItemDescription, StringComparison.CurrentCultureIgnoreCase);
+                    if (__result == 0)
+                        __result = slotX.CompareTo(slotY);
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                SubModule.LogOnce("sorting chests first", e);
+                return true;
+            }
         }
 
         // The tooltip of a chest: what is in it instead of trade rumours.

@@ -52,6 +52,8 @@ For Bannerlord v1.4.8, with or without the War Sails DLC. Needs Harmony and UIEx
   prefix on `SPInventoryVM.TransferAll` makes the chest weightless while the budget is worked out; the first
   transfer (or a finalizer) gives it its true weight back.
 - The chest's weight is the contents' weight by the game's capacity model (`GetItemEffectiveWeight`).
+- Prefixes on the four `SPInventorySortControllerVM` item comparers (type, name, quantity, cost) put chests
+  above every other item in either direction; chests among themselves go by name.
 - A postfix on `ItemMenuVM.SetItem` writes the chest's contents into its tooltip.
 - The buttons are a UIExtenderEx prefab insert before the left panel's gold readout, bound to a view model
   mixin on `SPInventoryVM`.

@@ -61,6 +61,14 @@ namespace ItemChests
             {
                 Debug.Print("[ItemChests] chest tooltip patch failed: " + e);
             }
+            try
+            {
+                Patches.ApplySorting(harmony);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("[ItemChests] chest sorting patch failed: " + e);
+            }
         }
 
         protected override void OnApplicationTick(float dt)
