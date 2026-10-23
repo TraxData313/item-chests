@@ -19,7 +19,9 @@ Chests open from your own inventory (the I key, on the map or in town). Horses a
 
 ## Install
 
-1. Download the zip from the [GitHub Releases page](https://github.com/TraxData313/item-chests/releases/latest).
+1. Download the zip from the [GitHub Releases page](https://github.com/TraxData313/item-chests/releases/latest),
+   subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3822341629),
+   or get it from [Nexus Mods](https://www.nexusmods.com/mountandblade2bannerlord/mods/14215).
 2. Extract it into `Mount & Blade II Bannerlord\Modules\`.
 3. Enable it in the launcher.
 
